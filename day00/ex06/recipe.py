@@ -72,28 +72,27 @@ Please select an option by typing the corresponding number:
 """
 
 def menu():
-    global input
     print(usage)
-    input = input()
-    while input != '5':
+    choice = input()
+    while choice != '5':
 
-        if input == '1':
+        if choice == '1':
             recipe = input("Please enter the recipe's name, an array of ingredients, the type of meal and the preparation time:")
             add_recipe(recipe)
-        elif input == '2':
+        elif choice == '2':
             name = input("Please enter the recipe's name to delete:")
             delete_recipe(name)
-        elif input == '3':
+        elif choice == '3':
             recipe = input("Please enter the recipe's name to print:")
             print_recipe(recipe)
-        elif input == '4':
+        elif choice == '4':
             print_all()
         else:
             print("""
             This option does not exist, please type the corresponding number.
             To exit, enter 5.
             """)
-        input = input(usage)
+        choice = input(usage)
 
     print("Cookbook closed.")
     exit(0)
