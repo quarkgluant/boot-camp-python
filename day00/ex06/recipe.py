@@ -77,10 +77,17 @@ def menu():
     while choice != '5':
 
         if choice == '1':
-            recipe = input("Please enter the recipe's name, an array of ingredients, the type of meal and the preparation time:")
-            add_recipe(recipe)
+            recipe_name = input("Please enter the recipe's name: ")
+            ingredients = []
+            ingredient = input("Please enter the first ingredient: ")
+            while ingredient != 'Q':
+                ingredients.append(ingredient)
+                ingredient = input("Please enter the next ingredient, or Q to exit: ")
+            meal = input("Please enter the type of meal:")
+            time = int(input("Please enter the preparation time (in minutes): "))
+            add_recipe(recipe_name, ingredients, meal, time)
         elif choice == '2':
-            name = input("Please enter the recipe's name to delete:")
+            name = input("Please enter the recipe's name to delete: ")
             delete_recipe(name)
         elif choice == '3':
             recipe = input("Please enter the recipe's name to print:")
