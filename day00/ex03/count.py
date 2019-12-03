@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
-from sys import exit, argv, stdin
-from os import path
+from sys import stdin
 
 def text_analyzer(text=''):
     """
