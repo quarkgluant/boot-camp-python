@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
-import datetime
+from datetime import datetime
 
-def Book():
-    def __init__(self, name, last_update, creation_date, recipe_list):
+class Book:
+    def __init__(self, name, recipe_list):
         self._name = name
-        self._last_update = last_update
-        self._creation_date = creation_date
+        self._last_update = datetime.now()
+        self._creation_date = datetime.now()
         self._recipe_list = recipe_list
 
     @property
@@ -33,12 +33,12 @@ def Book():
     @property
     def creation_date(self):
         return self._creation_date
-
-    @creation_date.setter
-    def creation_date(self, new_time):
-        if new_time < 0:
-            raise Exception("creation_date must be of type datetime")
-        self._creation_date = new_time
+    #
+    # @creation_date.setter
+    # def creation_date(self, new_time):
+    #     if new_time < 0:
+    #         raise Exception("creation_date must be of type datetime")
+    #     self._creation_date = new_time
 
     @property
     def recipe_list(self):
@@ -52,21 +52,30 @@ def Book():
 
     def get_recipe_by_name(self, name):
         """Print a recipe with the name `name` and return the instance"""
-        pass
+        for _, recipe in self.recipe_list.items():
+            if recipe.name == name:
+                print(recipe)
+                return recipe
 
     def get_recipes_by_types(self, recipe_type):
         """Get all recipe names for a given recipe_type """
-        pass
+        return [recipe for recipe in self.recipe_list[recipe_type]]
 
     def add_recipe(self, recipe):
         """Add a recipe to the book and update last_update"""
-        pass
+        if type(recipe) is Recipe:
+            self.recipe_list[recipe.recipe_type].append(recipe)
+            self.last_update = datetime.now()
+        else:
+            print(f"{recipe} is not a Recipe")
+            return
+
     
     def __str__(self):
-        """Return the string to print with the recipe info"""
+        """Return the string to print with the book info"""
         txt = f"""
-        the recipe {name()}, with {recipe_list()}, is made at {creation_date()}
-        and updated at {last_update()}
+        the recipe's book {self.name}, with {self.recipe_list}, was made at {self.creation_date}
+        and updated at {self.last_update}
         """
         return txt
 

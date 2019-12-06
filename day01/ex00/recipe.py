@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
-def Recipe():
+class Recipe:
     """class Recipe with name, cooking_lvl, cooking_time, ingredients, description, recipe_type"""
 
     def __init__(self, name, cooking_lvl, cooking_time, ingredients, description, recipe_type):
@@ -65,8 +65,8 @@ def Recipe():
     def __str__(self):
         """Return the string to print with the recipe info"""
         txt = f"""
-        the recipe {name()}, of type {recipe_type()}, is made with {', '.join(ingredients())}
-        cooking time: {cooking_time()} with cooking level: {cooking_lvl()}
+        the recipe {self.name}, of type {self.recipe_type}, is made with {', '.join(self.ingredients)}
+        cooking time: {self.cooking_time} with cooking level: {self.cooking_lvl}
         """
         return txt
 
