@@ -74,7 +74,7 @@ class Book:
     def __str__(self):
         """Return the string to print with the book info"""
         txt = f"""
-        the recipe's book {self.name}, with {([[recipe.name for recipe in recipes] for recipes in self.recipe_list.values()])}, was made at {self.creation_date}
+        the recipe's book {self.name}, with {', '.join([name[0] for name in [[recipe.name for recipe in recipes] for recipes in self.recipe_list.values()]])}, was made at {self.creation_date}
         and updated at {self.last_update}
         """
         return txt
