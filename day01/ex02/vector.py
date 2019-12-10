@@ -65,3 +65,9 @@ class Vector:
                 raise ZeroDivisionError
         else:
             raise TypeError("You can divide a scalar by only a vector")
+
+    def __str__(self):
+        return f"Vector with size {self.length} and values {self.values}"
+
+    def __repr__(self):
+        return f"{self.values} => {self.length}"

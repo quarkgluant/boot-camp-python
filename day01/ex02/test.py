@@ -34,3 +34,6 @@ rproduit_scalar = 4 * v_1
 print(f"produit of {v_1.values} * {v_2.values} = {produit_vec}")
 print(f"produit of {v_1.values} * 4 = {produit_scalar.values}")
 print(f"produit of 4 * {v_1.values}  = {rproduit_scalar.values}")
+
+print(f"v_1.__str__: {v_1.__str__()}")
+print(f"v_1.__repr__: {v_1.__repr__()}")
