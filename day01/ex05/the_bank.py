@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
+
 class Account(object):
     ID_COUNT = 1
     def __init__(self, name, **kwargs):
@@ -14,7 +15,21 @@ class Account(object):
         self.value += amount
 
 class Bank(object):
-    """The bank"""
+    """The bank
+        Now you have to code the class Bank.
+        It will have to handle the security part of each transfer attempt.
+        Security means checking if the Account is:
+            • the right object
+            • that it is not corrupted
+            • and that it has enough money
+        How do we define if a bank account is corrupted ?
+            • It has an even number of attributes.
+            • It has an attribute starting with b.
+            • It has no attribute starting with zip or addr.
+            • It has no attribute name, id and value.
+        A transaction is invalid if amount < 0 or if the amount is larger than the funds the first
+        account has available for transfer.
+    """
     def __init__(self):
         self.account = []
 
@@ -30,7 +45,7 @@ class Bank(object):
             @return
             True if success, False if an error occured
         """
-        
+
     def fix_account(self, account):
         """
             fix the corrupted account
