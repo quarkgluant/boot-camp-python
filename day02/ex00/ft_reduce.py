@@ -8,7 +8,6 @@ def ft_reduce(function_to_apply, list_of_inputs):
     res = function_to_apply(res, list_of_inputs[1])
     for i in range(2, len(list_of_inputs)):
         res = function_to_apply(res, list_of_inputs[i])
-
     return res
 
 
