@@ -2,5 +2,69 @@
 # -*-coding:utf-8 -*
 
 class CsvReader():
-    def __init__(self, sep=',', header=False, skip_top=0, skip_bottom=0):
-        pass
+    def __init__(self, filename, sep=',', header=False, skip_top=0, skip_bottom=0):
+        self.filename = filename
+        self.sep = sep
+        self.header = header
+        self.skip_top = skip_top
+        self.skip_bottom = skip_bottom
+
+    def __enter__(self):
+        with open(self.filename, "r") as f:
+            # raw_data = f.readlines()
+            # raw_data = f.read()
+            raw_data = list(f)
+        line_data = [line.replace("\"", "").replace("\n", "").replace("\t", "").replace(" ", "") for line in raw_data] #.split("\n")
+        print(line_data)
+        self.header = line_data[0].split(",") if self.header else None
+        data = line_data
+        print(f"dernière ligne: {data[-1]}")
+        if self.skip_top:
+            data = data[1:]
+        if self.skip_bottom:
+            data = data[:-1]
+        print(data)
+        self.csv = [line.split(self.sep) for line in data]
+        lines_length = []
+        for line in self.csv:
+            lines_length.append(len(line))
+        if max(lines_length) != min(lines_length):
+            return None
+
+                # print(f"bad format csv")
+        #         return None
+        print("self;csv")
+        print(self.csv)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type == FileNotFoundError:
+            print(f"No file found {exc_val}")
+            return -1
+        if exc_type == AttributeError:
+            print(f"bad format csv")
+            return None
+
+    def getdata(self):
+        if self is None:
+            return None
+        return self.csv
+
+    def getheader(self):
+        if self is None:
+            return None
+        return self.header
+
+
+
+if __name__ == "__main__":
+    with CsvReader('good.csv', header=True) as file:
+        data = file.getdata()
+        header = file.getheader()
+        print(f"data: {data}")
+        print(f"header: {header}")
+    with CsvReader('bad.csv', header=True) as file:
+        data = file.getdata()
+        header = file.getheader()
+        print(f"data: {data}")
+        print(f"header: {header}")
