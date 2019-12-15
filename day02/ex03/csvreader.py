@@ -11,30 +11,22 @@ class CsvReader():
 
     def __enter__(self):
         with open(self.filename, "r") as f:
-            # raw_data = f.readlines()
-            # raw_data = f.read()
             raw_data = list(f)
-        line_data = [line.replace("\"", "").replace("\n", "").replace("\t", "").replace(" ", "") for line in raw_data] #.split("\n")
-        print(line_data)
-        self.header = line_data[0].split(",") if self.header else None
-        data = line_data
-        print(f"dernière ligne: {data[-1]}")
+        data = [line.replace("\"", "").replace("\n", "").replace("\t", "").replace(" ", "") for line in raw_data]
+        self.header = data[0].split(",") if self.header else None
         if self.skip_top:
             data = data[1:]
         if self.skip_bottom:
             data = data[:-1]
-        print(data)
         self.csv = [line.split(self.sep) for line in data]
         lines_length = []
         for line in self.csv:
+            if '' in line:
+                line.remove('')
             lines_length.append(len(line))
         if max(lines_length) != min(lines_length):
             return None
 
-                # print(f"bad format csv")
-        #         return None
-        print("self;csv")
-        print(self.csv)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -59,6 +51,11 @@ class CsvReader():
 
 if __name__ == "__main__":
     with CsvReader('good.csv', header=True) as file:
+        data = file.getdata()
+        header = file.getheader()
+        print(f"data: {data}")
+        print(f"header: {header}")
+    with CsvReader('unknown.csv', header=True) as file:
         data = file.getdata()
         header = file.getheader()
         print(f"data: {data}")
