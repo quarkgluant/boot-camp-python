@@ -10,8 +10,13 @@ class CsvReader():
         self.skip_bottom = skip_bottom
 
     def __enter__(self):
-        with open(self.filename, "r") as f:
-            raw_data = list(f)
+        try:
+            with open(self.filename, "r") as f:
+                raw_data = list(f)
+        except FileNotFoundError:
+            print(f"No such file {self.filename}")
+            self.csv = None
+            return self
         data = [line.replace("\"", "").replace("\n", "").replace("\t", "").replace(" ", "") for line in raw_data]
         self.header = data[0].split(",") if self.header else None
         if self.skip_top:
@@ -55,13 +60,14 @@ if __name__ == "__main__":
         header = file.getheader()
         print(f"data: {data}")
         print(f"header: {header}")
-    with CsvReader('unknown.csv', header=True) as file:
-        data = file.getdata()
-        header = file.getheader()
-        print(f"data: {data}")
-        print(f"header: {header}")
-    with CsvReader('bad.csv', header=True) as file:
-        data = file.getdata()
-        header = file.getheader()
-        print(f"data: {data}")
-        print(f"header: {header}")
+    with CsvReader('unknown.csv', header=False) as file:
+        if file is not None:
+            data = file.getdata()
+            header = file.getheader()
+            print(f"data: {data}")
+            print(f"header: {header}")
+    with CsvReader('bad.csv', header=False) as file:
+        if file is not None:
+            data = file.getdata()
+            header = file.getheader()
+            print(f"data: {data}")
