@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
-import numpy
 from numpy import asarray, full, random, identity
-
 
 class NumPyCreator:
     def from_list(self, lst, dtype=None):
