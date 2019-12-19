@@ -20,6 +20,17 @@ class ColorFilter:
         shape_mask = [array.shape[0], array.shape[1], array.shape[2] - 1]
         return np.zeros(shape_mask, dtype=array.dtype)
 
+    def _shading(self, colors):
+        for index, val in enumerate(colors):
+            if val < 64:
+                colors[index] = 0
+            elif 64 <= val < 128:
+                colors[index] = 64
+            elif 128 <= val < 192:
+                colors[index] = 128
+            elif val >= 192 :
+                colors[index] = 192
+
 
     def invert(self, array):
         """Takes a NumPy array of an image as an argument and returns an array with inverted color.
@@ -35,7 +46,6 @@ class ColorFilter:
                 Authorized operator: None
         """
         array = self._dtype_to_int(array)
-        shape_mask = [array.shape[0], array.shape[1], array.shape[2] - 1]
         mask = self._mask(array)
         array[:, :, :2] = mask
         return array
@@ -54,7 +64,7 @@ class ColorFilter:
         """
         return array[:, :, :] * [1, 0, 0]
 
-    def to_celluloid(self, array):
+    def to_celluloid(self, array, n=4):
         """Takes a NumPy array of an image as an argument, and returns an array with a celluloid shade filter.
         The celluloid filter must display at least four thresholds of shades. Be careful! You are not
         asked to apply black contour on the object here (you will have to, but later...), you only have to
@@ -64,10 +74,14 @@ class ColorFilter:
                 Authorized function : .vectorize, (.arange?)
                 Authorized operator: None
         """
-        mask = np.linspace(0, 255, 4)
-        mask_range = np.arange(0, 255, 4)
-        array = array[array[:, :, :] > mask]
+        # val_to_range = 255 // n
+        array = self._dtype_to_int(array)
+        # vfunc = np.vectorize(self._shading)
+        for ext_array in array:
+            for colors in ext_array:
+                self._shading(colors)
         return array
+
 
     def to_grayscale(self, array, filter):
         """Takes a NumPy array of an image as an argument and returns an array in grayscale. The method takes another
@@ -123,5 +137,6 @@ if __name__ == '__main__':
     imp.display(cf.to_red(arr))
     imp.display(cf.to_blue(arr))
     imp.display(cf.to_celluloid(arr))
+    # print(f"diff {cf._dtype_to_int(arr) == cf.to_celluloid(arr)}")
     # imp.display(cf.to_grayscale(arr, 'm'))
     # imp.display(cf.to_grayscale(arr, 'weigthed'))
