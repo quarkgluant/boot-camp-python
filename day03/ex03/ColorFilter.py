@@ -20,7 +20,7 @@ class ColorFilter:
         shape_mask = [array.shape[0], array.shape[1], array.shape[2] - 1]
         return np.zeros(shape_mask, dtype=array.dtype)
 
-    def _shading(self, colors):
+    def _shading(self, colors, thresholds=[0, 64, 128, 192]):
         for index, val in enumerate(colors):
             if val < 64:
                 colors[index] = 0
@@ -74,7 +74,8 @@ class ColorFilter:
                 Authorized function : .vectorize, (.arange?)
                 Authorized operator: None
         """
-        # val_to_range = 255 // n
+        val_to_range = int(255 / n)
+        thresholds = np.arange(0, 255, val_to_range)
         array = self._dtype_to_int(array)
         # vfunc = np.vectorize(self._shading)
         for ext_array in array:
