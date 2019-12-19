@@ -11,8 +11,8 @@ class ImageProcessor:
         with the RGB values of the image pixels. It must display a message specifying
         the dimensions of the image (e.g. 340 x 500)."""
         img = mpimg.imread(path)
-        # if img.dtype == np.float32:  # Si le résultat n'est pas un tableau d'entiers
-        #     img = (img * 255).astype(np.uint8)
+        if img.dtype == np.float32:  # Si le résultat n'est pas un tableau d'entiers
+            img = (img * 255).astype(np.uint8)
         print(f"Loading image of dimensions {img.shape[0:2]}")
         return img
 
@@ -27,4 +27,7 @@ if __name__ == '__main__':
     arr = imp.load("../ressources/42AI.png")
     # Loading image of dimensions 200 x 200
     imp.display(arr)
-    print(arr)
+    print(arr.shape)
+    color = arr[0, 0, :]
+    print(f"extrait 3x3x3: {arr[:3, :3, :]}")
+    print(color)

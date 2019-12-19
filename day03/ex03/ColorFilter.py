@@ -8,33 +8,53 @@ class ColorFilter:
         For this exercise, the authorized functions and operators are specified for each methods. You
         are not allowed to use anything else."""
 
-    def invert(array):
+    def _dtype_to_int(selfself, array):
+        if array.dtype == np.float32:  # Si le résultat n'est pas un tableau d'entiers
+            array = (array * 255).astype(np.uint8)
+        if array.dtype == np.float64:  # Si le résultat n'est pas un tableau d'entiers
+            array = (array * 255 * 255).astype(np.uint16)
+        return array
+
+    def _mask(self, array):
+        array = self._dtype_to_int(array)
+        shape_mask = [array.shape[0], array.shape[1], array.shape[2] - 1]
+        return np.zeros(shape_mask, dtype=array.dtype)
+
+
+    def invert(self, array):
         """Takes a NumPy array of an image as an argument and returns an array with inverted color.
                 Authorized function : None
                 Authorized operator: -
         """
-        pass
+        array = self._dtype_to_int(array)
+        return -array
 
-    def to_blue(array):
+    def to_blue(self, array):
         """Takes a NumPy array of an image as an argument and returns an array with a blue filter.
                 Authorized function : .zeros, .shape
                 Authorized operator: None
         """
-        pass
+        array = self._dtype_to_int(array)
+        shape_mask = [array.shape[0], array.shape[1], array.shape[2] - 1]
+        mask = self._mask(array)
+        array[:, :, :2] = mask
+        return array
 
-    def to_green(array):
+    def to_green(self, array):
         """Takes a NumPy array of an image as an argument and returns an array with a green filter.
                 Authorized function : None
                 Authorized operator: *
         """
-        pass
-    def to_red(array):
+        return array[:, :, :] * [0, 1, 0]
+
+    def to_red(self, array):
         """Takes a NumPy array of an image as an argument and returns an array with a red filter.
                 Authorized function : None
                 Authorized operator: *
         """
-        pass
-    def to_celluloid(array):
+        return array[:, :, :] * [1, 0, 0]
+
+    def to_celluloid(self, array):
         """Takes a NumPy array of an image as an argument, and returns an array with a celluloid shade filter.
         The celluloid filter must display at least four thresholds of shades. Be careful! You are not
         asked to apply black contour on the object here (you will have to, but later...), you only have to
@@ -44,9 +64,12 @@ class ColorFilter:
                 Authorized function : .vectorize, (.arange?)
                 Authorized operator: None
         """
-        pass
+        mask = np.linspace(0, 255, 4)
+        mask_range = np.arange(0, 255, 4)
+        array = array[array[:, :, :] > mask]
+        return array
 
-    def to_grayscale(array, filter):
+    def to_grayscale(self, array, filter):
         """Takes a NumPy array of an image as an argument and returns an array in grayscale. The method takes another
         argument to select between two possible grayscale filters. Each filter has specific authorized functions and operators.
             * 'mean' or 'm' : Takes a NumPy array of an image as an argument and returns an array in grayscale created
@@ -86,13 +109,19 @@ if __name__ == '__main__':
     # from ImageProcessor import ImageProcessor
     imp = ImageProcessor()
     arr = imp.load("../ressources/42AI.png")
+    print(f"type of arr: {arr.dtype}")
     # Loading image of dimensions 200 x 200
     # from ColorFilter import ColorFilter
     cf = ColorFilter()
-    cf.invert(arr)
-    cf.to_green(arr)
-    cf.to_red(arr)
-    cf.to_blue(arr)
-    cf.to_celluloid(arr)
-    cf.to_grayscale(arr, 'm')
-    cf.to_grayscale(arr, 'weigthed')
+    invert_arr = cf.invert(arr)
+    print("première case de arr:")
+    print(arr[ 1, 1, :])
+    print("première case de invert_arr:")
+    print(invert_arr[ 1, 1, :])
+    imp.display(invert_arr)
+    imp.display(cf.to_green(arr))
+    imp.display(cf.to_red(arr))
+    imp.display(cf.to_blue(arr))
+    imp.display(cf.to_celluloid(arr))
+    # imp.display(cf.to_grayscale(arr, 'm'))
+    # imp.display(cf.to_grayscale(arr, 'weigthed'))
