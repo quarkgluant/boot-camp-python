@@ -88,7 +88,7 @@ class ColorFilter:
         return array
 
 
-    def to_grayscale(self, array, filter):
+    def to_grayscale(self, array, filter="w"):
         """Takes a NumPy array of an image as an argument and returns an array in grayscale. The method takes another
         argument to select between two possible grayscale filters. Each filter has specific authorized functions and operators.
             * 'mean' or 'm' : Takes a NumPy array of an image as an argument and returns an array in grayscale created
@@ -101,7 +101,22 @@ class ColorFilter:
                 Authorized function : .sum, .shape, .tile
                 Authorized operator: *
         """
-        pass
+        if filter.startswith("m"):
+            # on fait la somme selon l'axe z, donc la somme des 3 nombres RGB:
+            arr_sum = np.sum(array, axis=2)
+            # arr_sum.shape => (200, 200), donc on transforme cette matrice pour en faire (200, 200, 1):
+            arr_resh = np.reshape(arr_sum, (200, 200, 1))
+            # ne reste plus qu'à cloner 3 fois la valeur en z, pour avoir une array de (200, 200, 3):
+            arr_br = np.broadcast_to(arr_resh, (200, 200, 3))
+            # étape finale, on divise par le nombre de couleurs:
+            arr_mean = arr_br[:,:,:] / array.shape[2]
+            return arr_mean
+        elif filter.startswith("w"):
+            #  on multiplie les couleurs RGB par les coefficients, puis on somme le tout
+            arr_sum = np.sum(array[:, :, :] * [0.299, 0.587, 0.114], axis=2)
+            # arr_sum.shape => (200, 200), donc on crée une 3e dim avec arr_sum[:, :, None]
+            arr_w = np.tile(arr_sum[:, :, None], (1, 1, 3))
+            return arr_w
 
 
 import matplotlib.image as mpimg
@@ -143,6 +158,6 @@ if __name__ == '__main__':
     imp.display(cf.to_blue(arr))
     imp.display(cf.to_celluloid(arr))
     imp.display(cf.to_celluloid(arr, 8))
-    # print(f"diff {cf._dtype_to_int(arr) == cf.to_celluloid(arr)}")
-    # imp.display(cf.to_grayscale(arr, 'm'))
-    # imp.display(cf.to_grayscale(arr, 'weigthed'))
+    imp.display(cf.to_celluloid(arr, 2))
+    imp.display(cf.to_grayscale(arr, 'm'))
+    imp.display(cf.to_grayscale(arr, 'weigthed'))
