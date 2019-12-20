@@ -115,6 +115,7 @@ class ColorFilter:
             #  on multiplie les couleurs RGB par les coefficients, puis on somme le tout
             arr_sum = np.sum(array[:, :, :] * [0.299, 0.587, 0.114], axis=2)
             # arr_sum.shape => (200, 200), donc on crée une 3e dim avec arr_sum[:, :, None]
+            # et avec np.tile, on remplit cette 3e dimensions
             arr_w = np.tile(arr_sum[:, :, None], (1, 1, 3))
             return arr_w
 
