@@ -15,21 +15,25 @@ class ColorFilter:
             array = (array * 255 * 255).astype(np.uint16)
         return array
 
-    def _mask(self, array):
+    def _blue_mask(self, array):
         array = self._dtype_to_int(array)
         shape_mask = [array.shape[0], array.shape[1], array.shape[2] - 1]
         return np.zeros(shape_mask, dtype=array.dtype)
 
-    def _shading(self, colors, thresholds=[0, 64, 128, 192]):
+    def _shading(self, colors, thresholds):
+        val_threshold = 256 // thresholds
         for index, val in enumerate(colors):
-            if val < 64:
-                colors[index] = 0
-            elif 64 <= val < 128:
-                colors[index] = 64
-            elif 128 <= val < 192:
-                colors[index] = 128
-            elif val >= 192 :
-                colors[index] = 192
+            for i in range(thresholds):
+                if val_threshold * i <= val < val_threshold * (i + 1):
+                    colors[index] &= val_threshold * i
+            # if val < 64:
+            #     colors[index] &= 64 * (thresholds - 4)
+            # elif 64 <= val < 128:
+            #     colors[index] &= 64 * (thresholds - 3)
+            # elif 128 <= val < 192:
+            #     colors[index] &= 64 * (thresholds - 2)
+            # elif val >= 192 :
+            #     colors[index] = 64 * (thresholds - 1)
 
 
     def invert(self, array):
@@ -46,7 +50,7 @@ class ColorFilter:
                 Authorized operator: None
         """
         array = self._dtype_to_int(array)
-        mask = self._mask(array)
+        mask = self._blue_mask(array)
         array[:, :, :2] = mask
         return array
 
@@ -74,13 +78,13 @@ class ColorFilter:
                 Authorized function : .vectorize, (.arange?)
                 Authorized operator: None
         """
-        val_to_range = int(255 / n)
-        thresholds = np.arange(0, 255, val_to_range)
         array = self._dtype_to_int(array)
         # vfunc = np.vectorize(self._shading)
         for ext_array in array:
             for colors in ext_array:
-                self._shading(colors)
+                self._shading(colors, n)
+                # vfunc(colors, n)
+
         return array
 
 
@@ -138,6 +142,7 @@ if __name__ == '__main__':
     imp.display(cf.to_red(arr))
     imp.display(cf.to_blue(arr))
     imp.display(cf.to_celluloid(arr))
+    imp.display(cf.to_celluloid(arr, 8))
     # print(f"diff {cf._dtype_to_int(arr) == cf.to_celluloid(arr)}")
     # imp.display(cf.to_grayscale(arr, 'm'))
     # imp.display(cf.to_grayscale(arr, 'weigthed'))
