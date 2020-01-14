@@ -15,3 +15,26 @@ def howManyMedalsByCountry(df, country):
     :return: a dictionary of dictionaries giving the number and type of medal for each
     competition where the country team earned medals.
     """
+    sel_team = df["Team"] == country
+    df_result = df[sel_team]
+    count = {}
+    for year in df_result["Year"]:
+        sel_year = df_result["Year"] == year
+        count[year] = dict(df_result[sel_year]["Medal"].value_counts())
+    result = {}
+    for year in count:
+        try:
+            gold = count[year]["Gold"]
+        except KeyError:
+            gold = 0
+        try:
+            silver = count[year]["Silver"]
+        except KeyError:
+            silver = 0
+        try:
+            bronze = count[year]["Bronze"]
+        except KeyError:
+            bronze = 0
+
+        result[year] = dict(G=gold, S=silver, B=bronze)
+    return result
