@@ -18,7 +18,7 @@ class MyPlotLib:
         for feature in features:
             # if empDfObj.dtypes['Name'] == np.object:
             if data.dtypes[feature] != np.object:
-                ax.hist(data[feature], range=(0, 5))
+                ax.hist(data[feature], range=(data[feature].min(), data[feature].max()))
                 plt.show()
 
     def density(self, data, features):
@@ -56,5 +56,18 @@ class MyPlotLib:
         ax.boxplot(data[features].values)
         ax.set_xticklabels(features, rotation=90)
         # plt.xticks(rotation=90)
-        ax.set_ylim(0, 5)
+        # ax.set_ylim(data[features].all().min(), data[features].all().max())
+        ax.set_ylim(0, 200)
         plt.show()
+
+
+if __name__ == '__main__':
+    from FileLoader import FileLoader
+    loader = FileLoader()
+    data = loader.load('../athlete_events.csv')
+    from MyPlotLib import MyPlotLib
+    myplot = MyPlotLib()
+    myplot.pair_plot(data, ["Weight", "Height"])
+    myplot.box_plot(data, ["Weight", "Height"])
+    myplot.density(data, ["Weight", "Height"])
+    myplot.histogram(data, ["Weight", "Height"])
