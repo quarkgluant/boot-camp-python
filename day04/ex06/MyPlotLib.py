@@ -16,10 +16,9 @@ class MyPlotLib:
         """
         fig, ax = plt.subplots()
         for feature in features:
-            # if empDfObj.dtypes['Name'] == np.object:
             if data.dtypes[feature] != np.object:
                 ax.hist(data[feature], range=(data[feature].min(), data[feature].max()))
-                plt.show()
+        plt.show()
 
     def density(self, data, features):
         """
