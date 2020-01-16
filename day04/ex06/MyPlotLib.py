@@ -14,11 +14,14 @@ class MyPlotLib:
         :param features:
         :return:
         """
-        fig, ax = plt.subplots()
+
         for feature in features:
+            fig, ax = plt.subplots()
             if data.dtypes[feature] != np.object:
+                ax.set_title(feature)
                 ax.hist(data[feature], range=(data[feature].min(), data[feature].max()))
-        plt.show()
+            plt.show()
+        plt.clf()
 
     def density(self, data, features):
         """
@@ -58,13 +61,14 @@ class MyPlotLib:
         # ax.set_ylim(data[features].all().min(), data[features].all().max())
         ax.set_ylim(0, 200)
         plt.show()
+        plt.clf()
 
 
 if __name__ == '__main__':
     from FileLoader import FileLoader
     loader = FileLoader()
     data = loader.load('../athlete_events.csv')
-    from MyPlotLib import MyPlotLib
+    # from MyPlotLib import MyPlotLib
     myplot = MyPlotLib()
     myplot.pair_plot(data, ["Weight", "Height"])
     myplot.box_plot(data, ["Weight", "Height"])
