@@ -38,3 +38,10 @@ def howManyMedalsByCountry(df, country):
 
         result[year] = dict(G=gold, S=silver, B=bronze)
     return result
+
+if __name__ == '__main__':
+    from FileLoader import FileLoader
+    loader = FileLoader()
+    data = loader.load('../athlete_events.csv')
+    how_many_france = howManyMedalsByCountry(data, 'France')
+    print(how_many_france)

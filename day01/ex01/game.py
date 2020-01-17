@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*-coding:utf-8 -*
+
 class GotCharacter:
     """class for characters of Games Of Throne
     attributes: first_name, is_alive=True

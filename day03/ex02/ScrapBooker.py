@@ -66,7 +66,7 @@ if __name__ == '__main__':
     imp.display(arr)
     print(arr)
     sb = ScrapBooker()
-    # imp.display(sb.crop(arr, (100, 100), position=(50, 50)))
+    imp.display(sb.crop(arr, (100, 100), position=(50, 50)))
     # imp.display(sb.crop(arr, (200, 200)))
     # try:
     #     imp.display(sb.crop(arr, (150, 150), position=(60, 50)))
