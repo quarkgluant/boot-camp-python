@@ -3,6 +3,7 @@
 
 import numpy as np
 from numpy.lib import stride_tricks
+from math import e, pi
 
 class AdvancedFilter:
     """
@@ -34,9 +35,8 @@ class AdvancedFilter:
         strided_means = patches.mean(axis=(-1, -2))
         return strided_means
 
-        # window_size = 3
         # version non-vectorisée
-        m, n = img.shape
+        m, n = img.shape[:2]
         mm, nn = m - window_size + 1, n - window_size + 1
         patch_means = np.empty((mm, nn))
         for i in range(mm):
@@ -44,10 +44,37 @@ class AdvancedFilter:
                 patch_means[i, j] = img[i: i + window_size, j: j + window_size].mean()
         return patch_means
 
-    def gaussian_blur(self, img):
+    def gaussian_blur(self, img, window_size=3):
         """This method receives an image, performs a gaussian blur on it and returns a blurred copy.
         In a gaussian blur, the weighting of the neighboring pixels is adjusted so that closer pixels
         are more heavily counted in the average."""
+        # version non-vectorisée
+        # m, n = img.shape[:2]
+        # mm, nn = m - window_size + 1, n - window_size + 1
+        # patch_means = np.empty((mm, nn))
+        # for i in range(mm):
+        #     for j in range(nn):
+        #         patch_means[i, j] = img[i: i + window_size, j: j + window_size].mean()
+        # return patch_means
+
+    def gaussianBlur(self, img, kSize, kSigma=1):
+        kernel = self.__gaussianKernel(kSize, kSigma)
+        gausX = np.zeros((img.shape[0], img.shape[1] - kSize + 1))
+        for i, v in enumerate(kernel[0]):
+            gausX += v * img[:, i: img.shape[1] - kSize + i + 1]
+        gausY = np.zeros((gausX.shape[0] - kSize + 1, gausX.shape[1]))
+        for i, v in enumerate(kernel[:, 0]):
+            gausY += v * gausX[i: img.shape[0] - kSize + i + 1]
+        return gausY
+
+    def __gaussianKernel(self, size, sigma, twoDimensional=True):
+        if twoDimensional:
+            kernel = np.fromfunction(lambda x, y: (1 / (2 * pi * sigma ** 2)) * e ** (
+                        (-1 * ((x - (size - 1) / 2) ** 2 + (y - (size - 1) / 2) ** 2)) / (2 * sigma ** 2)),
+                                     (size, size))
+        else:
+            kernel = np.fromfunction(lambda x: e ** ((-1 * (x - (size - 1) / 2) ** 2) / (2 * sigma ** 2)), (size,))
+        return kernel / np.sum(kernel)
 
     def __make_gaussian_window(self, n, sigma=1):
         """
@@ -58,7 +85,7 @@ class AdvancedFilter:
         a = np.asarray([[x ** 2 + y ** 2 for x in range(-nn, nn + 1)] for y in range(-nn, nn + 1)])
         return np.exp(-a / (2 * sigma ** 2))
 
-    window_sizes = [9, 17, 33, 65]
+    # window_sizes = [9, 17, 33, 65]
     # fig, axs = plt.subplots(nrows=3, ncols=len(window_sizes), figsize=(15, 15));
 
     # mean filter
@@ -110,3 +137,5 @@ if __name__ == '__main__':
     filter = AdvancedFilter()
     mean = filter.mean_blur(arr, window_size=10)
     imp.display(mean)
+    gaus = filter.gaussianBlur(arr, 10)
+    imp.display(gaus)
