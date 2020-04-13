@@ -2,8 +2,10 @@
 # -*-coding:utf-8 -*
 from sys import exit, argv
 
+
 def change(str):
     return str[::-1].swapcase()
+
 
 if __name__ == '__main__':
     if len(argv) == 1:
