@@ -1,0 +1,5 @@
+help("modules") in Pyhton console
+pip list (or pip freeze)
+pip show numpy
+pip search "tesseract"
+pip freeze > requirements.txt
