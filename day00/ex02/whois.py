@@ -2,14 +2,16 @@
 # -*-coding:utf-8 -*
 from sys import exit, argv
 
-def oddity(str):
-    number = int(str)
+
+def oddity(string):
+    number = int(string)
     if number == 0:
         return "I'm Zero."
     elif number % 2 == 0:
         return "I'm Even."
     else:
         return "I'm Odd."
+
 
 if __name__ == '__main__':
     if len(argv) == 1:

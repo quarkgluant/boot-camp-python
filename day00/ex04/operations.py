@@ -2,6 +2,7 @@
 # -*-coding:utf-8 -*
 from sys import exit, argv
 
+
 def operate(first_arg, second_arg):
     try:
         first_arg += 0
@@ -30,7 +31,6 @@ def operate(first_arg, second_arg):
         Quotient:   ERROR (div by zero)
         Remainder:  ERROR (modulo by zero)
         """
-
 
 
 if __name__ == '__main__':

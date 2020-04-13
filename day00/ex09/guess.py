@@ -11,8 +11,8 @@ Good luck!
 What's your guess between 1 and 99?
 >> """
 
-def guess(number, count, target):
 
+def guess(number, count, target):
     try:
         to_guess = int(number)
         if to_guess == target:
@@ -32,13 +32,13 @@ def guess(number, count, target):
 
 if __name__ == '__main__':
     count = 1
-    essai = input(usage)
+    your_try = input(usage)
     mystery = randint(1, 99)
-    while essai != 'exit':
-        response = guess(essai, count, mystery)
+    while your_try != 'exit':
+        response = guess(your_try, count, mystery)
         print(response)
-        if int(essai) == mystery:
+        if int(your_try) == mystery:
             break
         count += 1
-        essai = input("What's your guess between 1 and 99?\n>> ")
+        your_try = input("What's your guess between 1 and 99?\n>> ")
     print("Good Bye!")

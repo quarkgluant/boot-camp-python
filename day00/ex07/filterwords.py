@@ -2,8 +2,10 @@
 # -*-coding:utf-8 -*
 from sys import exit, argv
 
+
 def operate(string, size):
     return [word for word in string.split(' ') if len(word) > size]
+
 
 if __name__ == '__main__':
     if len(argv) == 3 and not argv[1].isdigit() and argv[2].isdigit():

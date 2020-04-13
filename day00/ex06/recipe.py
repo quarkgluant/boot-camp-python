@@ -3,17 +3,17 @@
 
 cookbook = {
     'sandwich': {
-        'ingredients': [ 'ham', 'bread', 'cheese', 'tomatoes'],
+        'ingredients': ['ham', 'bread', 'cheese', 'tomatoes'],
         'meal': 'lunch',
         'prep_time': 10,
     },
     'cake': {
-        'ingredients': [ 'flour', 'sugar', 'eggs'],
+        'ingredients': ['flour', 'sugar', 'eggs'],
         'meal': 'dessert',
         'prep_time': 60,
     },
     'salad': {
-        'ingredients': [ 'avocado', 'arugula', 'tomatoes', 'spinach'],
+        'ingredients': ['avocado', 'arugula', 'tomatoes', 'spinach'],
         'meal': 'lunch',
         'prep_time': 15,
     }
@@ -41,6 +41,7 @@ for name, recipe in cookbook.items():
     for key, val in recipe.items():
         print(key, val)
 
+
 def print_recipe(name):
     print(f"""
     Recipe for {name}:
@@ -49,8 +50,10 @@ def print_recipe(name):
     Takes {cookbook[name]['prep_time']} minutes of cooking.
     """)
 
+
 def delete_recipe(name):
     del cookbook[name]
+
 
 def add_recipe(name, ingredients, meal, prep_time):
     # cookbook[name]['ingredients'] = ingredients
@@ -58,9 +61,11 @@ def add_recipe(name, ingredients, meal, prep_time):
     # cookbook[name]['prep_time'] = prep_time
     cookbook[name] = dict(ingredients=ingredients, meal=meal, prep_time=prep_time)
 
+
 def print_all():
     for name in cookbook:
         print_recipe(name)
+
 
 usage = """
 Please select an option by typing the corresponding number:
@@ -70,6 +75,7 @@ Please select an option by typing the corresponding number:
 4: Print the cookbook
 5: Quit
 """
+
 
 def menu():
     print(usage)
@@ -103,6 +109,7 @@ def menu():
 
     print("Cookbook closed.")
     exit(0)
+
 
 if __name__ == '__main__':
     menu()
