@@ -2,8 +2,10 @@
 # -*-coding:utf-8 -*
 from sys import exit, argv
 
-def change(str):
-    return str[::-1].swapcase()
+
+def change(string):
+    return string[::-1].swapcase()
+
 
 if __name__ == '__main__':
     if len(argv) == 1:
@@ -11,4 +13,4 @@ if __name__ == '__main__':
     elif len(argv) == 2:
         print(change(argv[1]))
     else:
-        print(' '.join([change(str) for str in argv[-1:0:-1]]))
+        print(' '.join([change(string) for string in argv[-1:0:-1]]))
