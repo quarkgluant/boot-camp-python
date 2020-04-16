@@ -5,6 +5,7 @@ import numpy as np
 from numpy.lib import stride_tricks
 from math import e, pi
 
+
 class AdvancedFilter:
     """
     All methods take in a 3D NumPy array (as in, a tensor of rank 3) and return a modified copy of
@@ -70,7 +71,7 @@ class AdvancedFilter:
     def __gaussianKernel(self, size, sigma, twoDimensional=True):
         if twoDimensional:
             kernel = np.fromfunction(lambda x, y: (1 / (2 * pi * sigma ** 2)) * e ** (
-                        (-1 * ((x - (size - 1) / 2) ** 2 + (y - (size - 1) / 2) ** 2)) / (2 * sigma ** 2)),
+                    (-1 * ((x - (size - 1) / 2) ** 2 + (y - (size - 1) / 2) ** 2)) / (2 * sigma ** 2)),
                                      (size, size))
         else:
             kernel = np.fromfunction(lambda x: e ** ((-1 * (x - (size - 1) / 2) ** 2) / (2 * sigma ** 2)), (size,))
@@ -106,6 +107,7 @@ class AdvancedFilter:
     # def __running_mean(x, N):
     #     cumsum = np.cumsum(np.insert(x, 0, 0))
     #     return (cumsum[N:] - cumsum[:-N]) / float(N)
+
 
 if __name__ == '__main__':
     import matplotlib.image as mpimg

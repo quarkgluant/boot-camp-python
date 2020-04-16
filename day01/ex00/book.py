@@ -3,6 +3,7 @@
 
 from datetime import datetime
 
+
 class Book:
     def __init__(self, name, recipe_list):
         self._name = name
@@ -33,6 +34,7 @@ class Book:
     @property
     def creation_date(self):
         return self._creation_date
+
     #
     # @creation_date.setter
     # def creation_date(self, new_time):
@@ -70,7 +72,6 @@ class Book:
             print(f"{recipe} is not a Recipe")
             return
 
-    
     def __str__(self):
         """Return the string to print with the book info"""
         txt = f"""
@@ -78,4 +79,3 @@ class Book:
         and updated at {self.last_update}
         """
         return txt
-

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*-coding:utf-8 -*
 
-class CsvReader():
+
+class CsvReader:
     def __init__(self, filename, sep=',', header=False, skip_top=0, skip_bottom=0):
         self.filename = filename
         self.sep = sep
@@ -51,7 +52,6 @@ class CsvReader():
         if self is None:
             return None
         return self.header
-
 
 
 if __name__ == "__main__":
